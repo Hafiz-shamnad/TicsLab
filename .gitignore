@@ -3,7 +3,7 @@
 # ----------------------
 
 # dependencies
-/node_modules/
+frontend/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -16,7 +16,7 @@
 /coverage/
 
 # next.js build output
-/.next/
+frontend/.next/
 /out/
 
 # production build folder
@@ -47,9 +47,11 @@ next-env.d.ts
 # ----------------------
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
+backend/__pycache__/
 *.py[cod]
 *$py.class
+backend/venv/
+
 
 # C extensions
 *.so
