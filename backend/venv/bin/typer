@@ -1,4 +1,4 @@
-#!/home/hafiz/ticslab/ticslab/apps/backend/venv/bin/python3
+#!/home/hafiz/ticslab/backend/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
