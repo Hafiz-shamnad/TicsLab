@@ -35,4 +35,4 @@ class RepoOutExtended(RepoOut):
     collaborators: List[RepoCollaboratorOut] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

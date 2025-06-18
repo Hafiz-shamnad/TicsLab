@@ -8,13 +8,14 @@ interface AuthContextProps {
   login: (t: string) => void;
   logout: () => void;
   loading: boolean;
+  refreshToken: () => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); // ✅ Add loading state
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedToken) {
       setToken(storedToken);
     }
-    setLoading(false); // ✅ Now this works
+    setLoading(false);
   }, []);
 
   const login = (t: string) => {
@@ -36,8 +37,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.push("/login");
   };
 
+  const refreshToken = async (): Promise<string | null> => {
+    try {
+      const response = await fetch("http://localhost:8000/api/refresh", {
+        method: "POST",
+        credentials: "include", // Include cookies if refresh token is stored in HttpOnly cookies
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }), // Adjust payload based on backend requirements
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to refresh token");
+      }
+
+      const data = await response.json();
+      const newToken = data.token; // Adjust based on backend response structure
+      if (newToken) {
+        localStorage.setItem("token", newToken);
+        setToken(newToken);
+        return newToken;
+      }
+      return null;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      logout();
+      return null;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ token, login, logout, loading }}>
+    <AuthContext.Provider value={{ token, login, logout, loading, refreshToken }}>
       {children}
     </AuthContext.Provider>
   );

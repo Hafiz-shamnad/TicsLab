@@ -1,21 +1,41 @@
-export interface RepoCardProps {
+"use client";
+
+interface Collaborator {
+  user_email: string;
+  role: string;
+}
+
+interface RepoCardProps {
   id: number;
   name: string;
   owner_email: string;
-  is_private: boolean;
+  collaborators: Collaborator[];
+  onClick: () => void;
+  onUpload: () => void;
 }
 
-export default function RepoCard({ id, name, owner_email, is_private }: RepoCardProps) {
+export default function RepoCard({
+  id,
+  name,
+  owner_email,
+  collaborators,
+  onClick,
+  onUpload,
+}: RepoCardProps) {
   return (
-    <div className="border rounded-lg p-3 shadow-sm bg-white">
-      <strong>{name}</strong>{" "}
-      {is_private ? (
-        <span className="text-sm text-red-500 font-medium">(Private)</span>
-      ) : (
-        <span className="text-sm text-green-600 font-medium">(Public)</span>
-      )}
-      <p className="text-xs text-gray-500">Owner: {owner_email}</p>
+    <div
+      className="border rounded p-4 hover:bg-gray-100 cursor-pointer flex justify-between items-center"
+      onClick={onClick}
+    >
+      <div>
+        <h3 className="font-semibold">{name}</h3>
+        <p className="text-sm text-gray-600">Owner: {owner_email}</p>
+        <p className="text-sm text-gray-600">
+          Collaborators: {collaborators?.length
+            ? collaborators.map((c) => `${c.user_email} (${c.role})`).join(", ")
+            : "None"}
+        </p>
+      </div>
     </div>
   );
 }
-

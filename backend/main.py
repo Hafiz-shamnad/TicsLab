@@ -7,6 +7,7 @@ from auth.utils import engine
 from config import CORS_ORIGINS
 from auth.routes import router as auth_router
 from repos.routes import router as repo_router
+from repos.files_routes import router as files_router
 
 
 
@@ -32,4 +33,4 @@ app.state.limiter = limiter
 app.include_router(auth_router)
 
 app.include_router(repo_router, prefix="/api/repos")
-
+app.include_router(files_router, prefix="/api")

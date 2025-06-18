@@ -10,7 +10,7 @@ SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 CORS_ORIGINS = [
     "https://ticslab.dev",
-    "http://localhost",
+    "http://localhost:3000",
     "http://localhost:3001",
     # add other origins you want to allow
 ]

@@ -11,5 +11,6 @@ class User(Base):
     full_name = Column(String)
     is_active = Column(Boolean, default=True)
     repositories = relationship("Repository", back_populates="owner")
+    collaborations = relationship("Collaborator", back_populates="user")
 
 
